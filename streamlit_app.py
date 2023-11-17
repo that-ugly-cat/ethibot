@@ -10,23 +10,18 @@ import ethibot_topics
 topiclist = [key for key in ethibot_topics.topics]
 
 # Create interface
-st.title("💬 Talk to Sam") 
+st.title("💬 Talk to EthiBot") 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "system", "content": persona}, {"role": "assistant", "content": initial_message}]
     with st.sidebar:
         topic = st.selectbox('What would you like to discuss about?', topiclist)
-      
-
-# Define persona
-with open('persona.txt') as f:
-    persona = f.read()
-
+        persona = ethibot_topics.topics[topic]['persona']
+        initial_message = ethibot_topics.topics[topic]['initial message']
+        if st.button("Let's start!", type="primary"):
+            st.session_state["messages"] = [{"role": "system", "content": persona}, {"role": "assistant", "content": initial_message}]
+    
+   
 # Define hidden instructions
-prompt_instruction = 'Reflect on the system role before answering. Try to behave as much as possible as the person described in your system role.'
-
-# Define initial message
-initial_message = "Hi, I am Sam. I am a synthetic patient, based on the work of Giovanni Spitale, Gerold Schneider, Federico Germani, and Nikola Biller Andorno. Feel free to ask me about my experiece as a patient. Also, I speak English, Italian, German, and French."
-
+prompt_instruction = 'Reflect on the system role before answering. Try to behave as much as possible as the entity described in your system role. Check thoroughly your output against the system role.'
 
 
 # Show messages
